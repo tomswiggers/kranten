@@ -21,7 +21,7 @@ class Ui_Client(QtGui.QWidget):
   def createButtonView(self):
     edit = QtGui.QPushButton('Raadpleeg', self)
     edit.setToolTip('Gegevens van een klant raadplegen')
-    edit.clicked.connect(self.showEdit)
+    edit.clicked.connect(self.showView)
 
     return edit
 
@@ -86,3 +86,17 @@ class Ui_Client(QtGui.QWidget):
 
   def setMessage(self, message):
     self.message.setText(message)
+
+  def showView(self):
+    import os, sys
+
+    dir = os.path.dirname(os.path.abspath(__file__))
+    dir += "/ui"
+    sys.path.append(dir)
+
+    from client_view import Ui_Client_View
+
+    client = Ui_Client_View(self.mainWindow, self)
+    self.hide()
+    self.mainWindow.main.hide()
+ 

@@ -1,4 +1,5 @@
 from PySide import QtCore, QtGui
+from ui_client import Ui_Client
 
 class Ui_Main(QtGui.QWidget):
   button_height = 20
@@ -25,13 +26,5 @@ class Ui_Main(QtGui.QWidget):
     self.main.show()
 
   def showClient(self):
-    import os, sys
-
-    dir = os.path.dirname(os.path.abspath(__file__))
-    dir += "/ui";
-    sys.path.append(dir)
-
-    from client import Ui_Client
-
     client = Ui_Client(self)
     self.main.hide()  
