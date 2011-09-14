@@ -1,56 +1,55 @@
 from PySide import QtCore, QtGui
 from client import Client
 
-class Form_Client(QtGui.QWidget):
+class Form_Client():
+  elements = dict()
+  
   def __init__(self):
-    super(Form_Client, self).__init__()
+    print "init"
+
+  def setButtonSave(self, func):
+    self.saveButton.clicked.connect(func)
 
   def formFields(self):
-    self.name = QtGui.QLineEdit()
-    self.firstname = QtGui.QLineEdit()
-    self.street = QtGui.QLineEdit()
+    self.elements["name"] = QtGui.QLineEdit()
+    self.elements["firstname"] = QtGui.QLineEdit()
+    self.elements["street"] = QtGui.QLineEdit()
 
     layout = QtGui.QFormLayout()
-    layout.addRow(self.tr("Naam:"), self.name)
-    layout.addRow(self.tr("Voornaam:"), self.firstname)
-    layout.addRow(self.tr("Straat:"), self.street)
+    layout.addRow("Naam:", self.elements["name"])
+    layout.addRow("Voornaam:", self.elements["firstname"])
+    layout.addRow("Straat:", self.elements["street"])
 
     return layout
 
-  def showNew(self):
-    self.name = QtGui.QLineEdit()
-    self.firstname = QtGui.QLineEdit()
-
+  def formButtons(self):
     self.saveButton = QtGui.QPushButton("Opslaan")
-    self.saveButton.clicked.connect(self.save)
-
     self.cancelButton = QtGui.QPushButton("Annuleer")
-    self.cancelButton.clicked.connect(self.showClient)
-  
     self.backButton = QtGui.QPushButton("Terug naar hoofdmenu")
-    self.backButton.clicked.connect(self.showMainWindow)
-
-    layoutInput = QtGui.QVBoxLayout()
-    layoutInput.addWidget(self.name)
-    layoutInput.addWidget(self.firstname)
-
-    layoutLabels = QtGui.QVBoxLayout()
-    layoutLabels.addWidget(QtGui.QLabel("Naam"))
-    layoutLabels.addWidget(QtGui.QLabel("Voornaam"))
-
-    layoutForm = QtGui.QHBoxLayout()
-    layoutForm.addLayout(layoutLabels)
-    layoutForm.addLayout(layoutInput)
 
     layoutButtons = QtGui.QHBoxLayout()
     layoutButtons.addWidget(self.saveButton)
     layoutButtons.addWidget(self.cancelButton)
     layoutButtons.addWidget(self.backButton)
 
-    layout = QtGui.QVBoxLayout()
-    layout.addLayout(layoutForm)
-    layout.addLayout(layoutButtons)
+    return layoutButtons
 
-    self.setLayout(layout)
+  def populateFormFields(self, client):
 
+    for k, v in self.elements.items():
+      print k
+      self.elements[k].setText(client.getValue(k))
 
+  def disableFormFields(self):
+
+    for k, v in self.elements.items():
+      print k
+      self.elements[k].setReadOnly(True)
+
+  def getValues(self):
+    client = Client()
+
+    for k, v in self.elements.items():
+      client.setValue(k, v.text())
+
+    return client

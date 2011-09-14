@@ -11,9 +11,11 @@ if __name__ == "__main__":
   dir = base + "/form"
   sys.path.append(dir)
 
-  from main import Ui_Main
-  from ui_client import Ui_Client
+  from ui import Ui
+  from ui_window import Ui_Window
+  from ui_main import Ui_Main
 
   app = QtGui.QApplication(sys.argv)
-  main = Ui_Main()
+  window = Ui_Window()
+  main = Ui_Main(window)
   sys.exit(app.exec_())

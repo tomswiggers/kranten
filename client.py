@@ -8,7 +8,19 @@ class Client:
     self.client[key] = value
 
   def __getattr__(self, key):
-    return self.client[key]
+    if key in self.client:
+      return self.client[key]
+    else:
+      return ""
+
+  def getValue(self, key):
+    if key in self.client:
+      return self.client[key]
+    else:
+      return ""
+
+  def setValue(self, key, value):
+    self.client[key] = value
 
   def getNewClientId(self):
     d = self.shelve.open(self.filename)
@@ -21,6 +33,20 @@ class Client:
     d.close()
 
     return id
+
+  def getClientById(self, id):
+    d = self.shelve.open(self.filename)
+    id = str(id)
+
+    if (d.has_key(id)):
+      client = d[id]
+
+      for k, v in client.items():
+        self.client[k] = v
+
+    d.close()
+
+    return self.client
 
   def save(self):
     id = self.getNewClientId()
