@@ -12,7 +12,9 @@ class Ui_Main(Ui):
 
   def init(self):
     layoutFrame = QtGui.QVBoxLayout()
-    
+   
+    layoutFrame.addWidget(self.createMessage())
+
     buttonClient = QtGui.QPushButton('Klanten')
     buttonClient.setToolTip('Klanten aanmaken/bewerken')
     buttonClient.clicked.connect(self.showClient)
@@ -20,8 +22,13 @@ class Ui_Main(Ui):
     buttonService = QtGui.QPushButton('Diensten')
     buttonService.setToolTip('Diensten')
 
+    buttonMaintenance = QtGui.QPushButton('Onderhoud')
+    buttonMaintenance.setToolTip('Backup en herstellen')
+    buttonMaintenance.clicked.connect(self.showMaintenance)
+
     layoutFrame.addWidget(buttonClient)
     layoutFrame.addWidget(buttonService)
+    layoutFrame.addWidget(buttonMaintenance)
 
     self.setLayout(layoutFrame)
     self.show()

@@ -1,8 +1,5 @@
 from PySide import QtCore, QtGui
 from config import Config
-'''
-from ui_main import Ui_Main
-'''
 
 class Ui(QtGui.QWidget):
 
@@ -50,3 +47,15 @@ class Ui(QtGui.QWidget):
 
     self.window.placeholder.close()
     Ui_Client_View(self.window)
+
+  def showMaintenance(self):
+    from ui_maintenance import Ui_Maintenance
+
+    self.window.placeholder.close()
+    Ui_Maintenance(self.window)
+
+  def showMaintenanceBackup(self):
+    print "showMaintenanceBackup"
+
+  def showMaintenanceRestore(self):
+    print "showMaintenanceRestore"
