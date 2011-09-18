@@ -24,35 +24,27 @@ class Ui(QtGui.QWidget):
     return self.message
   
   def showMain(self):
-    from ui_main import Ui_Main
-    
-    self.window.placeholder.close()
-    Ui_Main(self.window)
+    print "Ui.showMain"
+    self.window.showFrame("Ui_Main")
 
   def showClient(self):
-    from ui_client import Ui_Client
-    self.window.placeholder.close()
-    Ui_Client(self.window)
+    print "Ui.showClient"
+    self.window.showFrame("Ui_Client")
 
   def showClientNew(self):
-    from ui_client_new import Ui_Client_New
-    self.window.placeholder.close()
-    Ui_Client_New(self.window)
+    print "Ui.showClientNew"
+    self.window.showFrame("Ui_Client_New")
 
   def showClientEdit(self):
-    print "showEdit"
+    print "Ui.showEdit"
   
   def showClientView(self):
-    from ui_client_view import Ui_Client_View
-
-    self.window.placeholder.close()
-    Ui_Client_View(self.window)
+    print "Ui.showClientEdit"
+    self.window.showFrame("Ui_Client_View")
 
   def showMaintenance(self):
-    from ui_maintenance import Ui_Maintenance
-
-    self.window.placeholder.close()
-    Ui_Maintenance(self.window)
+    print "Ui.showMaintenance"
+    self.window.showFrame("Ui_Maintenance")
 
   def showMaintenanceBackup(self):
     print "showMaintenanceBackup"

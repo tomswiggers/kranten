@@ -42,4 +42,4 @@ class Ui_Client_New(Ui):
 
     self.showClient()
 
-    self.window.placeholder.setMessage("Nieuwe klant met nummer " + str(client.id) + " aangemaakt!")
+    self.window.setMessage("Nieuwe klant met nummer " + str(client.id) + " aangemaakt!")

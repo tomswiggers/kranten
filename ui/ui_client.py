@@ -53,7 +53,4 @@ class Ui_Client(Ui):
 
     self.setLayout(layout)
 
-  def setMessage(self, message):
-    self.message.setText(message)
-
 

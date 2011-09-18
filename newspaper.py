@@ -2,7 +2,12 @@ from PySide import QtCore, QtGui
 
 if __name__ == "__main__":
   import os, sys
-  
+ 
+  os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
+
+  from django.db import models
+  from django.core.management import call_command
+
   base = os.path.dirname(os.path.abspath(__file__))
   
   dir = base + "/ui"
@@ -11,11 +16,10 @@ if __name__ == "__main__":
   dir = base + "/form"
   sys.path.append(dir)
 
-  from ui import Ui
   from ui_window import Ui_Window
-  from ui_main import Ui_Main
 
   app = QtGui.QApplication(sys.argv)
   window = Ui_Window()
-  main = Ui_Main(window)
+  window.showFrame("Ui_Main")
+
   sys.exit(app.exec_())
