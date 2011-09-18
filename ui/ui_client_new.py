@@ -25,9 +25,19 @@ class Ui_Client_New(Ui):
     self.setLayout(layout)
 
   def save(self):
+    '''
     client = self.form.getValues()
     client.save()
+    '''
 
+    from newspaper.models import Client
+    client = Client()
+    
+    for k, v in self.form.elements.items():
+      setattr(client, k, v.text())
+
+    client.save()
+    
     self.window.placeholder.close()
 
     self.showClient()
