@@ -1,7 +1,9 @@
+from config import Config
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', 
-        'NAME': 'newspaper.db',                      
+        'ENGINE': Config.dbEngine,
+        'NAME': Config.dbName,                      
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.

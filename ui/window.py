@@ -1,11 +1,12 @@
 from PySide import QtCore, QtGui
 from config import Config
 
-from ui_main import Ui_Main
-from ui_client import Ui_Client
-from ui_client_new import Ui_Client_New
-from ui_client_view import Ui_Client_View
-from ui_maintenance import Ui_Maintenance
+from main import Ui_Main
+from client import Ui_Client
+from client_new import Ui_Client_New
+from client_view import Ui_Client_View
+from maintenance import Ui_Maintenance
+from maintenance_backup import Ui_Maintenance_Backup
 
 class Ui_Window(QtGui.QWidget):
   frames = dict()

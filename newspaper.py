@@ -16,7 +16,7 @@ if __name__ == "__main__":
   dir = base + "/form"
   sys.path.append(dir)
 
-  from ui_window import Ui_Window
+  from ui.window  import Ui_Window
 
   app = QtGui.QApplication(sys.argv)
   window = Ui_Window()

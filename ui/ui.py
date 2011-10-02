@@ -48,6 +48,7 @@ class Ui(QtGui.QWidget):
 
   def showMaintenanceBackup(self):
     print "showMaintenanceBackup"
+    self.window.showFrame("Ui_Maintenance_Backup")
 
   def showMaintenanceRestore(self):
     print "showMaintenanceRestore"
