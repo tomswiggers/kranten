@@ -1,5 +1,4 @@
 from PySide import QtCore, QtGui
-from client import Client
 
 class Form_Client():
   elements = dict()

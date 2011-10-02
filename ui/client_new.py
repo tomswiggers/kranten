@@ -2,7 +2,7 @@ from PySide import QtCore, QtGui
 
 from ui import Ui
 
-from form_client import Form_Client
+from form.client import Form_Client
 
 class Ui_Client_New(Ui):
   def __init__(self, window):

@@ -8,14 +8,6 @@ if __name__ == "__main__":
   from django.db import models
   from django.core.management import call_command
 
-  base = os.path.dirname(os.path.abspath(__file__))
-  
-  dir = base + "/ui"
-  sys.path.append(dir)
-
-  dir = base + "/form"
-  sys.path.append(dir)
-
   from ui.window  import Ui_Window
 
   app = QtGui.QApplication(sys.argv)
