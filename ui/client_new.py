@@ -1,7 +1,6 @@
 from PySide import QtCore, QtGui
-
 from ui import Ui
-
+from newspaper.models import Client
 from form.client import Form_Client
 
 class Ui_Client_New(Ui):
@@ -10,6 +9,16 @@ class Ui_Client_New(Ui):
     super(Ui_Client_New, self).__init__(window)
 
   def init(self):
+    client = Client()
+    #print client._get_FIELD_display()	
+    print dir(client)
+
+    for field in Client._meta.fields:
+      print field.name
+      print field.verbose_name
+      print field.get_internal_type()
+
+
     layoutForm = self.form.formFields()
     layoutButtons = self.form.formButtons()
 
@@ -24,21 +33,11 @@ class Ui_Client_New(Ui):
     self.setLayout(layout)
 
   def save(self):
-    '''
-    client = self.form.getValues()
-    client.save()
-    '''
-
-    from newspaper.models import Client
     client = Client()
     
     for k, v in self.form.elements.items():
       setattr(client, k, v.text())
 
     client.save()
-    
-    self.window.placeholder.close()
-
     self.showClient()
-
     self.window.setMessage("Nieuwe klant met nummer " + str(client.id) + " aangemaakt!")

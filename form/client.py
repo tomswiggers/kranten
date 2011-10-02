@@ -1,4 +1,5 @@
 from PySide import QtCore, QtGui
+from newspaper.models import Client
 
 class Form_Client():
   elements = dict()
@@ -10,14 +11,13 @@ class Form_Client():
     self.saveButton.clicked.connect(func)
 
   def formFields(self):
-    self.elements["name"] = QtGui.QLineEdit()
-    self.elements["firstname"] = QtGui.QLineEdit()
-    self.elements["street"] = QtGui.QLineEdit()
-
     layout = QtGui.QFormLayout()
-    layout.addRow("Naam:", self.elements["name"])
-    layout.addRow("Voornaam:", self.elements["firstname"])
-    layout.addRow("Straat:", self.elements["street"])
+
+    for field in Client._meta.fields:
+
+      if field.get_internal_type() == 'CharField': 
+        self.elements[field.name] = QtGui.QLineEdit()
+        layout.addRow(field.verbose_name, self.elements[field.name])
 
     return layout
 
@@ -37,7 +37,9 @@ class Form_Client():
 
     for k, v in self.elements.items():
       print k
-      self.elements[k].setText(client.getValue(k))
+      print getattr(client, k)
+      print client.name
+      self.elements[k].setText(getattr(client, k))
 
   def disableFormFields(self):
 

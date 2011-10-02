@@ -2,6 +2,7 @@ from PySide import QtCore, QtGui
 
 from ui import Ui
 from form.client import Form_Client
+from newspaper.models import Client
 
 class Ui_Client_View(Ui):
   def __init__(self, window):
@@ -48,7 +49,5 @@ class Ui_Client_View(Ui):
     self.setLayout(self.layout)
 
   def search(self):
-    client = Client()
-    client.getClientById(self.clientNumber.text())
-
+    client = Client.objects.get(id = int(self.clientNumber.text()))
     self.formSearch.populateFormFields(client)
