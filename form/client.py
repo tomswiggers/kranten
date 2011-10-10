@@ -15,11 +15,51 @@ class Form_Client():
 
     for field in Client._meta.fields:
 
-      if field.get_internal_type() == 'CharField': 
+      if field.name == 'order':
+        self.createOrderList()
+        layout.addRow(field.verbose_name, self.listWidget)
+      elif field.name == 'round':
+        layout.addRow(field.verbose_name, self.createRadioButtons())
+        self.group.buttonClicked.connect(self.fillOrderList)
+      elif field.get_internal_type() == 'CharField': 
         self.elements[field.name] = QtGui.QLineEdit()
         layout.addRow(field.verbose_name, self.elements[field.name])
-
+      
     return layout
+
+  def createOrderList(self):
+    self.listWidget = QtGui.QListWidget()
+    self.listWidget.clear()
+
+  def fillOrderList(self):
+    round = self.group.checkedId()
+
+    self.listWidget.clear()
+  
+    QtGui.QListWidgetItem('begin', self.listWidget, 0)
+
+    for client in Client.objects.filter(round = round).order_by('order'):
+      QtGui.QListWidgetItem(str(client.order) + ':' + client.name + ', ' + client.street + ', ' + client.number, self.listWidget, int(client.order))
+
+    QtGui.QListWidgetItem('einde', self.listWidget, -1)
+
+  def createRadioButtons(self):
+    hbox = QtGui.QHBoxLayout()
+    round1 = QtGui.QRadioButton('1')
+    round2 = QtGui.QRadioButton('2')
+    round3 = QtGui.QRadioButton('3')
+
+    hbox.addWidget(round1)
+    hbox.addWidget(round2)
+    hbox.addWidget(round3)
+
+    self.group = QtGui.QButtonGroup()
+    
+    self.group.addButton(round1, 1)
+    self.group.addButton(round2, 2)
+    self.group.addButton(round3, 3)
+
+    return hbox
 
   def formButtons(self):
     self.saveButton = QtGui.QPushButton("Opslaan")

@@ -34,3 +34,5 @@ class Ui_Window(QtGui.QWidget):
   def setMessage(self, message):
     self.frames[self.current].message.setText(message)
 
+  def destroyFrame(self, key):
+    del self.frames[key]

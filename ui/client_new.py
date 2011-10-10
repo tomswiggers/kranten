@@ -2,6 +2,7 @@ from PySide import QtCore, QtGui
 from ui import Ui
 from newspaper.models import Client
 from form.client import Form_Client
+from django.db.models import F
 
 class Ui_Client_New(Ui):
   def __init__(self, window):
@@ -38,6 +39,23 @@ class Ui_Client_New(Ui):
     for k, v in self.form.elements.items():
       setattr(client, k, v.text())
 
+    round = self.form.group.checkedId()
+    setattr(client, 'round', round)
+
+    for listWidget in self.form.listWidget.selectedItems():
+      order = listWidget.type()
+
+    if order == -1:
+      order = Client.objects.filter(round = round).count()
+      order = order
+    else:
+      Client.objects.filter(round = round, order__gte = order).update(order = F('order') + 1)
+    
+    setattr(client, 'order', order)
+
+    print "order:" + str(order)
+
     client.save()
     self.showClient()
+    self.window.destroyFrame('Ui_Client_New')
     self.window.setMessage("Nieuwe klant met nummer " + str(client.id) + " aangemaakt!")
