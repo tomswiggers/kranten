@@ -14,7 +14,7 @@ class Client(models.Model):
   box = models.CharField('Bus', max_length=255)
   pc = models.CharField('Postcode', max_length=255)
   city = models.CharField('Gemeente', max_length=255)
-  round = models.IntegerField('Ronde')
+  round_nbr = models.IntegerField('Ronde')
   order = models.IntegerField('Volgorde in ronde')
 
 class Holiday(models.Model):

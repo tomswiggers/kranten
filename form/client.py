@@ -18,7 +18,7 @@ class Form_Client():
       if field.name == 'order':
         self.createOrderList()
         layout.addRow(field.verbose_name, self.listWidget)
-      elif field.name == 'round':
+      elif field.name == 'round_nbr':
         layout.addRow(field.verbose_name, self.createRadioButtons())
         self.group.buttonClicked.connect(self.fillOrderList)
       elif field.get_internal_type() == 'CharField': 
@@ -32,14 +32,14 @@ class Form_Client():
     self.listWidget.clear()
 
   def fillOrderList(self):
-    round = self.group.checkedId()
+    round_nbr = self.group.checkedId()
 
     self.listWidget.clear()
   
     QtGui.QListWidgetItem('begin', self.listWidget, 0)
 
-    for client in Client.objects.filter(round = round).order_by('order'):
-      QtGui.QListWidgetItem(str(client.order) + ':' + client.name + ', ' + client.street + ', ' + client.number, self.listWidget, int(client.order))
+    for client in Client.objects.filter(round_nbr = round_nbr).order_by('order'):
+      QtGui.QListWidgetItem(str(client.id) + ':' + client.name + ', ' + client.street + ', ' + client.number, self.listWidget, int(client.order))
 
     QtGui.QListWidgetItem('einde', self.listWidget, -1)
 

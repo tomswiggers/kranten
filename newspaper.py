@@ -1,3 +1,4 @@
+#/usr/bin/python
 from PySide import QtCore, QtGui
 
 if __name__ == "__main__":

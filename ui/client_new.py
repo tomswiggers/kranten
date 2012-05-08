@@ -39,17 +39,17 @@ class Ui_Client_New(Ui):
     for k, v in self.form.elements.items():
       setattr(client, k, v.text())
 
-    round = self.form.group.checkedId()
-    setattr(client, 'round', round)
+    round_nbr = self.form.group.checkedId()
+    setattr(client, 'round_nbr', round_nbr)
 
     for listWidget in self.form.listWidget.selectedItems():
       order = listWidget.type()
 
     if order == -1:
-      order = Client.objects.filter(round = round).count()
+      order = Client.objects.filter(round_nbr = round_nbr).count()
       order = order
     else:
-      Client.objects.filter(round = round, order__gte = order).update(order = F('order') + 1)
+      Client.objects.filter(round_nbr = round_nbr, order__gte = order).update(order = F('order') + 1)
     
     setattr(client, 'order', order)
 
