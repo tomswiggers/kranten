@@ -17,6 +17,15 @@ class Client(models.Model):
   round_nbr = models.IntegerField('Ronde')
   order = models.IntegerField('Volgorde in ronde')
 
+class Item(models.Model):
+  name = models.CharField('Naam', max_length=255)
+  description = models.CharField('Beschrijving', max_length=255)
+
+class Price(models.Model):
+  begindate = models.CharField(max_length=255)
+  enddate = models.CharField(max_length=255)
+  item_id = models.IntegerField('Artikel')
+
 class Holiday(models.Model):
   begindate = models.CharField(max_length=255)
   enddate = models.CharField(max_length=255)

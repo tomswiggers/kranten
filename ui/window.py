@@ -5,6 +5,7 @@ from main import Ui_Main
 from client import Ui_Client
 from client_new import Ui_Client_New
 from client_view import Ui_Client_View
+from items import Ui_Items
 from maintenance import Ui_Maintenance
 from maintenance_backup import Ui_Maintenance_Backup
 

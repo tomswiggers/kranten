@@ -42,6 +42,18 @@ class Ui(QtGui.QWidget):
     print "Ui.showClientEdit"
     self.window.showFrame("Ui_Client_View")
 
+  def showItems(self):
+    print "Ui.showItems"
+    self.window.showFrame("Ui_Items")
+
+  def showItemsNew(self):
+    print "Ui.showItems"
+    self.window.showFrame("Ui_Items")
+
+  def showItemsList(self):
+    print "Ui.showItems"
+    self.window.showFrame("Ui_Items")
+
   def showMaintenance(self):
     print "Ui.showMaintenance"
     self.window.showFrame("Ui_Maintenance")

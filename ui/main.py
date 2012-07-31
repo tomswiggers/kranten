@@ -17,8 +17,9 @@ class Ui_Main(Ui):
     buttonClient.setToolTip('Klanten aanmaken/bewerken')
     buttonClient.clicked.connect(self.showClient)
 
-    buttonService = QtGui.QPushButton('Diensten')
-    buttonService.setToolTip('Diensten')
+    buttonItems = QtGui.QPushButton('Artikels')
+    buttonItems.setToolTip('Artikels aanmaken/bewerken')
+    buttonItems.clicked.connect(self.showItems)
 
     buttonMaintenance = QtGui.QPushButton('Onderhoud')
     buttonMaintenance.setToolTip('Backup en herstellen')
@@ -29,7 +30,7 @@ class Ui_Main(Ui):
     buttonClose.clicked.connect(self.window.close)
 
     layoutFrame.addWidget(buttonClient)
-    layoutFrame.addWidget(buttonService)
+    layoutFrame.addWidget(buttonItems)
     layoutFrame.addWidget(buttonMaintenance)
     layoutFrame.addWidget(buttonClose)
 
