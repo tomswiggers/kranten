@@ -1,0 +1,5 @@
+Newspaper
+---------
+
+Create or sync database:
+python syncdb.py 
