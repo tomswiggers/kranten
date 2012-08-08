@@ -23,6 +23,13 @@ class Ui(QtGui.QWidget):
 
     return self.message
   
+  def createButtonMainMenu(self):
+    button = QtGui.QPushButton('Hoofdmenu', self)
+    button.setToolTip('Ga terug naar het hoofdmenu')
+    button.clicked.connect(self.showMain)
+
+    return button
+
   def showMain(self):
     print "Ui.showMain"
     self.window.showFrame("Ui_Main")
@@ -57,6 +64,10 @@ class Ui(QtGui.QWidget):
   def showItemList(self):
     print "Ui.showItemList"
     self.window.showFrame("Ui_Item_List")
+
+  def showItemEdit(self):
+    print "Ui.showItemEdit"
+    self.window.showFrame("Ui_Item_Edit")
 
   def showMaintenance(self):
     print "Ui.showMaintenance"

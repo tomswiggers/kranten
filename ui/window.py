@@ -8,6 +8,7 @@ from client_view import Ui_Client_View
 from item import Ui_Item
 from item_new import Ui_Item_New
 from item_list import Ui_Item_List
+from item_edit import Ui_Item_Edit
 from maintenance import Ui_Maintenance
 from maintenance_backup import Ui_Maintenance_Backup
 
