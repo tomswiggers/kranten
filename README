@@ -3,3 +3,9 @@ Newspaper
 
 Create or sync database:
 python syncdb.py 
+
+
+SQLITE3
+-------
+sqlite3 newspaper.db
+.dump

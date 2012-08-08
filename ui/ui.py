@@ -43,16 +43,20 @@ class Ui(QtGui.QWidget):
     self.window.showFrame("Ui_Client_View")
 
   def showItems(self):
-    print "Ui.showItems"
-    self.window.showFrame("Ui_Items")
+    print "Ui.showItem"
+    self.window.showFrame("Ui_Item")
 
-  def showItemsNew(self):
-    print "Ui.showItems"
-    self.window.showFrame("Ui_Items")
+  def showItemNew(self):
+    print "Ui.showItem"
+    self.window.showFrame("Ui_Item")
 
-  def showItemsList(self):
-    print "Ui.showItems"
-    self.window.showFrame("Ui_Items")
+  def showItemNew(self):
+    print "Ui.showItemNew"
+    self.window.showFrame("Ui_Item_New")
+
+  def showItemList(self):
+    print "Ui.showItemList"
+    self.window.showFrame("Ui_Item_List")
 
   def showMaintenance(self):
     print "Ui.showMaintenance"
