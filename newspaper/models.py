@@ -13,26 +13,35 @@ class Client(models.Model):
   city = models.CharField('Gemeente', max_length=255)
   round_nbr = models.IntegerField('Ronde')
   order = models.IntegerField('Volgorde in ronde')
-  delivery_begindate = models.DateField()
-  delivery_enddate = models.DateField()
 
 class Item(models.Model):
   name = models.CharField('Naam', max_length=255)
   description = models.CharField('Beschrijving', max_length=255)
   days = models.IntegerField()
+  freq = models.IntegerField()
 
   def isDeliveryDay(self, date, days):
-    day = int(date.weekday()) + 1
-    check = pow(2, day)
+    check = self.getDay(date)
 
     if days & check > 0:
       return True
     else:
       return False
- 
+  
+  def getDayBit(self, weekday):
+    return pow(2, int(weekday) + 1)
+
+  def getDayBitByDate(self, date):
+    day = int(date.weekday()) + 1
+    return pow(2, day)
+
+  def __str__(self):
+    return self.name + ', ' + str(self.days) + ', ' + str(self.freq)
+
 class Price(models.Model):
-  begindate = models.CharField(max_length=255)
-  enddate = models.CharField(max_length=255)
+  begindate = models.DateField()
+  enddate = models.DateField()
+  price = models.FloatField('Prijs')
   item_id = models.IntegerField('Artikel')
 
 class Holiday(models.Model):
