@@ -21,7 +21,7 @@ class Item(models.Model):
   freq = models.IntegerField()
 
   def isDeliveryDay(self, date, days):
-    check = self.getDay(date)
+    check = self.getDayBitByDate(date)
 
     if days & check > 0:
       return True
