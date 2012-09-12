@@ -20,6 +20,9 @@ class Item(models.Model):
   days = models.IntegerField()
   freq = models.IntegerField()
 
+  def __str__(self):
+    return self.name + ', ' + str(self.days) + ', ' + str(self.freq)
+
   def isDeliveryDay(self, date, days):
     check = self.getDayBitByDate(date)
 
@@ -35,8 +38,13 @@ class Item(models.Model):
     day = int(date.weekday()) + 1
     return pow(2, day)
 
-  def __str__(self):
-    return self.name + ', ' + str(self.days) + ', ' + str(self.freq)
+  def getItemByName(self, name):
+    return Item.objects.get(name = name)
+ 
+  #@todo build in proper checks
+  def getItemIdByName(self, name):
+    item = self.getItemByName(name)
+    return item.id
 
 class Price(models.Model):
   begindate = models.DateField()
@@ -58,4 +66,8 @@ class Delivery(models.Model):
   days = models.IntegerField()
   begindate = models.DateField()
   enddate = models.DateField()
- 
+  
+  def __str__(self):
+    return 'Delivery Object(client_id, item_id, days, begindate, enddate): ' + str(self.client_id) + ', ' + str(self.item_id) + ', ' + str(self.days) + ', ' + str(self.begindate) + ', ' + str(self.enddate)
+
+
