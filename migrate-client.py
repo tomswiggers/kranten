@@ -1,6 +1,7 @@
 from dbfpy import dbf
 import os, sys
- 
+import datetime
+
 os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
 
 from django.db import models
@@ -22,6 +23,9 @@ class Client_Tmp:
     self.round_nbr = self.getRoundNbr(client['TOER'])
     self.order = client['VOLG']
 
+    self.delivery_begindate = self.getDate(client['LEVVAN'], 2000, 1, 1)
+    self.delivery_enddate = self.getDate(client['LEVTOT'], 2999, 12, 31)
+
   def getRoundNbr(self, round):
     round_nbr = 0
 
@@ -34,6 +38,11 @@ class Client_Tmp:
 
     return round_nbr
 
+  def getDate(self, entrydate, year, month, day):
+    if type(entrydate).__name__ == 'date':
+      return entrydate
+    else:
+      return datetime.date(year, month, day)
 
 def saveClients(clients, round_nbr):
   print '=================================================='
@@ -46,6 +55,7 @@ def saveClients(clients, round_nbr):
     client = Client()
 
     for field in Client._meta.fields:
+
       if hasattr(client_tmp, field.name):
         setattr(client, field.name, getattr(client_tmp, field.name))
       

@@ -13,6 +13,18 @@ class Client(models.Model):
   city = models.CharField('Gemeente', max_length=255)
   round_nbr = models.IntegerField('Ronde')
   order = models.IntegerField('Volgorde in ronde')
+  delivery_begindate = models.DateField()
+  delivery_enddate = models.DateField()
+
+  def isDeliveryDay(self, client, entrydate):
+
+    if client.delivery_begindate <= entrydate and client.delivery_enddate >= entrydate:
+      return True
+    else:
+      return False
+
+  def __str__(self):
+    return str(self.id) + ';' + self.name + ';' + self.firstname + ';' + str(self.round_nbr) + ';' + str(self.order)
 
 class Item(models.Model):
   name = models.CharField('Naam', max_length=255)
