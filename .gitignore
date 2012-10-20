@@ -2,3 +2,4 @@
 *.shelve
 *.db
 migrate
+configmerchant.py
