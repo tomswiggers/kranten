@@ -16,7 +16,7 @@ def saveDelivery(delivery):
   deliveryObj = Delivery()
 
   deliveryObj.begindate = getDate(delivery['DATVAN'], 2000, 1, 1)
-  deliveryObj.enddate = getDate(delivery['DATVAN'], 2999, 12, 31)
+  deliveryObj.enddate = getDate(delivery['DATTOT'], 2999, 12, 31)
   deliveryObj.item_id = item.getItemIdByName(delivery['DIENST'])
   deliveryObj.client_id = delivery['KLANT']
   deliveryObj.days = getDays(delivery)
@@ -37,7 +37,7 @@ def getDays(delivery):
   for i in range(2, 7):
     
     if delivery['LEV' + str(i)] == 'Y':
-      days = days + Item().getDayBit(i-1)
+      days = days + Item().getDayBit(i-2)
 
   return days
 

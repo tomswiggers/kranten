@@ -20,16 +20,16 @@ class TestClientModel(unittest.TestCase):
     self.client.delivery_enddate = date(2012, 9, 6)
 
   def test_dayBefore(self):
-    self.assertEqual(False, self.client.isDeliveryDay(self.client, date(2012, 9, 2)))
+    self.assertEqual(False, self.client.isActive(self.client, date(2012, 9, 2)))
 
   def test_dayAfter(self):
-    self.assertEqual(False, self.client.isDeliveryDay(self.client, date(2012, 9, 7)))  
+    self.assertEqual(False, self.client.isActive(self.client, date(2012, 9, 7)))  
   
   def test_dayBegindate(self):
-    self.assertEqual(True, self.client.isDeliveryDay(self.client, date(2012, 9, 3)))
+    self.assertEqual(True, self.client.isActive(self.client, date(2012, 9, 3)))
   
   def test_dayEnddate(self):
-    self.assertEqual(True, self.client.isDeliveryDay(self.client, date(2012, 9, 6)))
+    self.assertEqual(True, self.client.isActive(self.client, date(2012, 9, 6)))
 
   def test_dayInMiddle(self):
-    self.assertEqual(True, self.client.isDeliveryDay(self.client, date(2012, 9, 5)))
+    self.assertEqual(True, self.client.isActive(self.client, date(2012, 9, 5)))

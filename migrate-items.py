@@ -55,7 +55,7 @@ def getDaysItem(item, itemObj):
     for i in range(2, 7):
       
       if item['LEV' + str(i)] == 'Y':
-        days = days + itemObj.getDayBit(i-1)
+        days = days + itemObj.getDayBit(i-2)
 
     return days
   elif item['FREKW'] == 'W':
@@ -68,8 +68,10 @@ def getFreq(item):
     return 1
   elif item['FREKW'] == 'W':
     return 2
-  elif item['FREKW'] == 'M':
+  elif item['FREKW'] == 'V':
     return 3
+  elif item['FREKW'] == 'M':
+    return 4
   else:
     print item
 
@@ -79,6 +81,8 @@ db = dbf.Dbf("migrate/KR_DIENS.DBF")
 
 print "Migrate items"
 print "============="
+
+Item.objects.all().delete()
 
 for item in db:
   saveItem(item)

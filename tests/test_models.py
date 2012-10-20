@@ -42,4 +42,11 @@ class TestItemModel(unittest.TestCase):
     self.assertEqual(16, self.item.getDayBitByDate(date(2012, 9, 6)), 'Test Thursday')
     self.assertEqual(32, self.item.getDayBitByDate(date(2012, 9, 7)), 'Test Friday')
     self.assertEqual(64, self.item.getDayBitByDate(date(2012, 9, 8)), 'Test Saturday')
-    
+
+  def test_getDayBit(self):
+    self.assertEqual(2, self.item.getDayBit(0))
+    self.assertEqual(4, self.item.getDayBit(1))
+    self.assertEqual(8, self.item.getDayBit(2))
+    self.assertEqual(16, self.item.getDayBit(3))
+    self.assertEqual(32, self.item.getDayBit(4))
+    self.assertEqual(64, self.item.getDayBit(5))

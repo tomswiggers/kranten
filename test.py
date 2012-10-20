@@ -1,9 +1,4 @@
-from dbfpy import dbf
-import os, sys
+import datetime
 
-db = dbf.Dbf("migrate/KR_KLANT.DBF")
-
-for rec in db:
-  print '=============================================================='
-  print rec
-  print '=============================================================='
+d = datetime.date(2012, 7, 9)
+print d.weekday()

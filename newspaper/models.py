@@ -15,16 +15,24 @@ class Client(models.Model):
   order = models.IntegerField('Volgorde in ronde')
   delivery_begindate = models.DateField()
   delivery_enddate = models.DateField()
+  prepay = models.IntegerField()
+  saldo = models.FloatField()
 
-  def isDeliveryDay(self, client, entrydate):
+  def isActive(self, client, entrydate):
 
     if client.delivery_begindate <= entrydate and client.delivery_enddate >= entrydate:
       return True
     else:
       return False
+  
+  def __repr__(self):
+    return self.getString()
 
   def __str__(self):
-    return str(self.id) + ';' + self.name + ';' + self.firstname + ';' + str(self.round_nbr) + ';' + str(self.order)
+    return self.getString()
+
+  def getString(self):
+    return str(self.id) + ';' + self.name + ';' + self.firstname + ';' + str(self.round_nbr) + ';' + str(self.order) + ';' + str(self.saldo)
 
 class Item(models.Model):
   name = models.CharField('Naam', max_length=255)
@@ -33,7 +41,7 @@ class Item(models.Model):
   freq = models.IntegerField()
 
   def __str__(self):
-    return self.name + ', ' + str(self.days) + ', ' + str(self.freq)
+    return str(self.id) + ';' + self.name + ', ' + str(self.days) + ', ' + str(self.freq)
 
   def isDeliveryDay(self, date, days):
     check = self.getDayBitByDate(date)
@@ -64,11 +72,17 @@ class Price(models.Model):
   price = models.FloatField('Prijs')
   item_id = models.IntegerField('Artikel')
 
+  def __str__(self):
+    return str(self.id) + ';' + str(self.price) + ';' + str(self.item_id)
+
 class Holiday(models.Model):
   begindate = models.DateField()
   enddate = models.DateField()
   client_id = models.IntegerField()
- 
+
+  def __str__(self):
+    return str(self.client_id) + ';' + str(self.begindate) + ';' + str(self.enddate)
+
 class BankHoliday(models.Model):
   entrydate = models.DateField()
 
