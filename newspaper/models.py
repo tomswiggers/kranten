@@ -16,6 +16,7 @@ class Client(models.Model):
   delivery_begindate = models.DateField()
   delivery_enddate = models.DateField()
   prepay = models.IntegerField()
+  freq = models.IntegerField()
   saldo = models.FloatField()
 
   def isActive(self, client, entrydate):

@@ -15,3 +15,5 @@ DATABASES = {
 INSTALLED_APPS = (
   'newspaper'
 )
+
+#DEBUG = True

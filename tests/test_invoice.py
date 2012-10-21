@@ -25,6 +25,11 @@ class TestInvoice(unittest.TestCase):
     self.assertEqual(31, self.invoice.getLastDayOfMonth(date(2012, 5, 1)))
     self.assertEqual(31, self.invoice.getLastDayOfMonth(date(2012, 12, 1)))
 
+  def test_getBeginDatePreviousMonth(self):
+    self.assertEqual(date(2011, 12, 1), self.invoice.getBeginDatePreviousMonth(date(2012, 1, 25)))
+    self.assertEqual(date(2012, 1, 1), self.invoice.getBeginDatePreviousMonth(date(2012, 2, 25)))
+    self.assertEqual(date(2012, 11, 1), self.invoice.getBeginDatePreviousMonth(date(2012, 12, 25)))
+  
   def test_getBeginDateNextMonth(self):
     self.assertEqual(date(2012, 1, 1), self.invoice.getBeginDateNextMonth(date(2011, 12, 3)))
     self.assertEqual(date(2012, 2, 1), self.invoice.getBeginDateNextMonth(date(2012, 1, 3)))

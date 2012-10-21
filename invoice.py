@@ -6,12 +6,20 @@ os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
 
 from django.db import models
 from django.core.management import call_command
+from django.db import connection
 
 from newspaper.models import *
 
 from configmerchant import ConfigMerchant
 
 class Invoice:
+
+  MONTH = 1
+  BIMONTH = 2
+  QUARTER = 3
+  BIYEAR = 4
+  YEAR = 5
+
 
   def __init__(self, year, month):
     self.year = year
@@ -37,6 +45,17 @@ class Invoice:
     beginDateNextMonth = self.getBeginDateNextMonth(entryDate)
     return datetime.date(beginDateNextMonth.year, beginDateNextMonth.month, self.getLastDayOfMonth(beginDateNextMonth))
 
+  def getBeginDatePreviousMonth(self, entryDate):
+    month = entryDate.month - 1
+
+    if month == 0:
+      month = 12
+      year = entryDate.year - 1
+    else:
+      year = entryDate.year
+
+    return date(year, month, 1)
+
   def getBeginDateNextMonth(self, entryDate):
     month = (entryDate.month % 12) + 1
 
@@ -54,32 +73,64 @@ class Invoice:
 
     return entryDate
 
+  def getClients(self):
+    return Client.objects.order_by('round_nbr', 'order').all()
+
+  def getClientsWithSaldo(self):
+    return Client.objects.filter(saldo__gt=0).all()
+
   def calculateInvoice(self):
+    invoices = self.getInvoiceList(self.getClients())
+
+    self.writeList(invoices)
+    self.writeInvoices(invoices)
+
+  def calculateSaldos(self):
+    clients = self.getClientsWithSaldo()
+    invoices = self.getInvoiceList(clients)
+    print invoices
+
+    self.printSaldos(invoices)
+
+  def getInvoiceList(self, clients):
     self.log('Start')
     invoices = list()
-    query = Client.objects
-
-    clients = query.order_by('round_nbr', 'order').all()
-    
+       
     for client in clients:
+      flag = True
       self.log('Start getInvoice: ' + str(client))
 
       beginDate = self.beginDate
       endDate = self.endDate
 
       if client.prepay == 1:
-        beginDate = self.getBeginDateNextMonth(beginDate)
-        endDate = self.getEndDateMonth(beginDate)
-      elif client.prepay == 2 and beginDate.month % 3 == 0:
-        beginDate = self.getBeginDateNextMonth(beginDate)
-        endDate = self.getEndDateQuarter(endDate)
 
-      invoices.append(self.getInvoice(client, beginDate, endDate))
+        if client.freq == self.MONTH:
+          print "===== PREPAY MONTH ====="
+          beginDate = self.getBeginDateNextMonth(beginDate)
+          endDate = self.getEndDateMonth(beginDate)
+        elif client.freq == self.QUARTER and beginDate.month % 3 == 0:
+          print "===== PREPAY QUARTER ====="
+          beginDate = self.getBeginDateNextMonth(beginDate)
+          endDate = self.getEndDateQuarter(endDate)
+        else:
+          print "===== PREPAY NOK ====="
+          flag = False
+      else:
+
+        if client.freq == self.BIMONTH and beginDate.month % 2 == 0:
+          print "===== BIMONTH ====="
+
+          beginDate = self.getBeginDatePreviousMonth(beginDate)
+          print beginDate
+          print endDate
+
+      if flag:
+        invoices.append(self.getInvoice(client, beginDate, endDate))
 
       self.log('End getInvoice: ' + str(client))
 
-    self.writeList(invoices)
-    self.writeInvoices(invoices)
+    return invoices
 
   def getInvoice(self, client, beginDate, endDate):
     flag = True
@@ -230,12 +281,37 @@ class Invoice:
 
     return query.get()
 
+  def printSaldos(self, invoices):
+    line = "{:<5}{:<30}{:>15}{:>25}{:>25}{:>15}"
+  
+    print line.format("Id", "Naam", "Vorig saldo", "Bedrag " + str(self.beginDate.strftime('%B')), "Te betalen " + str(self.beginDate.strftime('%B')), "Nieuw saldo")
+
+    for invoice in invoices:
+
+      if len(invoice.values()) > 0:
+        total = self.getTotal(invoice.values()[0])
+        client = invoice.values()[0]['client']
+
+        pay = float(0)
+        saldoNew = float(0)
+
+        if client.saldo > total:
+          pay = 0
+          saldoNew = client.saldo - total
+        else:
+          pay = total - client.saldo
+          saldoNew = 0
+
+        print line.format(client.id, client.name, client.saldo, total, pay, saldoNew)
+
   def writeList(self, invoices):
     print '------------------writeList--------------------'
     filename = 'betalingslijst-' + str(self.beginDate.strftime('%B')) + '.csv'
     fp = open(filename, 'w')
 
     fp.write('Postcode;Gemeente;Straat;Nummer;Naam;Voornaam;Totaal;Saldo;Te betalen\n')
+
+    #sorted(invoices, key=lambda invoice: invoice[0].street)
 
     for invoice in invoices:
 
@@ -254,30 +330,34 @@ class Invoice:
       if len(invoice.values()) > 0:
         fp.write(self.getClientInvoice(invoice.values()[0]))
 
-  def getClientSummary(self, invoice):
+  def getTotal(self, invoice):
     total = float(0)
 
     for priceId in invoice['deliveries']:
       total = total + (invoice['deliveries'][priceId]['price'].price * invoice['deliveries'][priceId]['total'])
+    
+    return total
+
+  def getClientSummary(self, invoice):
+    total = self.getTotal(invoice)
 
     client = invoice['client']
-    line = '{};{};{};{};{};{};{};{};{}\n'
+    line = '{};{};{};{};{};{};{}\n'
     
-    remaining = float(0)
-    saldo = float(0)
-    
-    if client.saldo > 0:
-      saldo = client.saldo - total
+    if total > client.saldo:
+      total = total - client.saldo
 
-      if client.saldo - total < 0:
-        remaining = total - client.saldo
-
-    return line.format(client.pc, client.city, client.street, client.number, client.name, client.firstname, total, saldo, remaining)
+    return line.format(client.pc, client.city, client.street, client.number, client.name, client.firstname, total)
 
   def getClientInvoice(self, invoice):
     client = invoice['client']
     deliveries = invoice['deliveries']
-    
+  
+    if not client.box == "0":
+      houseNumber = client.number + '/' + client.box
+    else:
+      houseNumber = client.number
+
     invoiceStr = '\r\n'
     invoiceStr = invoiceStr + '\r\n'
     invoiceStr = invoiceStr + ConfigMerchant.line1 + '\r\n'
@@ -286,7 +366,7 @@ class Invoice:
     invoiceStr = invoiceStr + ConfigMerchant.line4 + date.today().isoformat() + '\r\n'
     invoiceStr = invoiceStr + '__________________________________________________________________________\r\n'
     invoiceStr = invoiceStr + 'REKENING van ' + invoice['beginDate'].isoformat() + ' tot ' + invoice['endDate'].isoformat() + '             ' + client.name + ' ' + client.firstname + '\r\n'
-    invoiceStr = invoiceStr + '                                                   ' + client.street + ' ' + client.number + '\r\n'
+    invoiceStr = invoiceStr + '                                                   ' + client.street + ' ' + houseNumber + '\r\n'
     invoiceStr = invoiceStr + '                                                   ' + client.pc + ' ' + client.city + '\r\n'
 
     invoiceStr = invoiceStr + '\r\n'
