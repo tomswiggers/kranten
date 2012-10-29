@@ -1,5 +1,5 @@
 from PySide import QtCore, QtGui
-from newspaper.models import Client
+from newspaper.models import *
 
 class Form_Client():
   elements = dict()

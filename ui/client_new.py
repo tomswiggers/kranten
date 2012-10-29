@@ -1,8 +1,9 @@
 from PySide import QtCore, QtGui
 from ui import Ui
-from newspaper.models import Client
 from form.client import Form_Client
 from django.db.models import F
+
+from newspaper.models import *
 
 class Ui_Client_New(Ui):
   def __init__(self, window):
