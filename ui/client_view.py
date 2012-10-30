@@ -10,13 +10,29 @@ class Ui_Client_View(Ui):
 
   def createSearchForm(self):
     self.clientNumber = QtGui.QLineEdit()
+    self.clientName = QtGui.QLineEdit()
+    self.clientFirstname = QtGui.QLineEdit()
     self.searchButton = QtGui.QPushButton("zoek")
 
     self.searchButton.clicked.connect(self.search)
 
-    layoutSearch = QtGui.QHBoxLayout()
-    layoutSearch.addWidget(QtGui.QLabel("Klantnummer"))
-    layoutSearch.addWidget(self.clientNumber)
+    layoutSearch = QtGui.QVBoxLayout()
+
+    number = QtGui.QHBoxLayout()
+    number.addWidget(QtGui.QLabel("Klantnummer"))
+    number.addWidget(self.clientNumber)
+    layoutSearch.addLayout(number)
+
+    name = QtGui.QHBoxLayout()
+    name.addWidget(QtGui.QLabel("Naam"))
+    name.addWidget(self.clientName)
+    layoutSearch.addLayout(name)
+    
+    firstname = QtGui.QHBoxLayout()
+    firstname.addWidget(QtGui.QLabel("Voornaam"))
+    firstname.addWidget(self.clientFirstname)
+    layoutSearch.addLayout(firstname)
+    
     layoutSearch.addWidget(self.searchButton)
  
     return layoutSearch
@@ -49,5 +65,12 @@ class Ui_Client_View(Ui):
     self.setLayout(self.layout)
 
   def search(self):
-    client = Client.objects.get(id = int(self.clientNumber.text()))
+
+    if len(self.clientNumber.text()):
+      client = Client.objects.get(id = int(self.clientNumber.text()))
+    elif len(self.clientName.text()):
+      client = Client.objects.get(name = self.clientName.text())
+    elif len(self.clientFirstname.text()):
+      client = Client.objects.get(firstname = self.clientFirstname.text())
+    
     self.formSearch.populateFormFields(client)
