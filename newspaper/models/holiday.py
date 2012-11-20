@@ -8,6 +8,9 @@ class Holiday(models.Model):
   enddate = models.DateField()
   client_id = models.IntegerField()
 
+  class Meta:
+    app_label = "newspaper"
+
   def __str__(self):
     return str(self.client_id) + ';' + str(self.begindate) + ';' + str(self.enddate)
 

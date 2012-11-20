@@ -9,6 +9,9 @@ class Price(models.Model):
   price = models.FloatField('Prijs')
   item_id = models.IntegerField('Artikel')
 
+  class Meta:
+    app_label = "newspaper"
+
   def __str__(self):
     return str(self.id) + ';' + str(self.price) + ';' + str(self.item_id)
 
